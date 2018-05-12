@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 const appModules = require('./config/appConfig').modules;
 
@@ -13,11 +14,13 @@ app.use(bodyParser.json());
 
 mongoose.connect(db).then(() => console.log('DB CONNECTED!')).catch(err => console.log("ERR::", err));
 
-app.get('/', (req, res) => res.send('Hey!'));
+app.use(passport.initialize());
+
+require('./config/passport')(passport)
 
 appModules.forEach( module => {
-  const path = `./modules/${module}/${module}.router`;
-  const router = require( path );
+  const routerPath = `./modules/${module}/${module}.router`;
+  const router = require( routerPath );
   
   app.use( `/api/${module}`, router);
 });
