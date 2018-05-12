@@ -4,5 +4,10 @@ module.exports = {
     r : 'pg', // rating of image
     d : 'mm', // default image 
     protocol: 'http'
-  }
+  },
+  modules : [
+    'posts',
+    'profile',
+    'users'
+  ]
 };
