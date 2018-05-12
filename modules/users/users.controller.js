@@ -6,6 +6,8 @@ const User = require('../../models/User');
 const imageOptions = require('../../config/appConfig').gravatarOptions;
 const secret = require('../../config/keys').secret;
 
+const TOKEN_EXPIRY = 36000;
+
 const register =  (req, res) => {
   const {body} = req;
 
@@ -54,7 +56,7 @@ const loginUser = (req, res) => {
         }
 
         jwt.sign(payload, secret, {
-          expiresIn: 3600
+          expiresIn: TOKEN_EXPIRY
         }, (err, token) => {
           if (err) 
             throw err;
@@ -82,7 +84,15 @@ const loginUser = (req, res) => {
 
 }
 
+const currentUser = ( req, res ) => {
+  if ( req.user )
+    return res.json( { success : true, data : req.user, message : "User found" } )
+  else
+    return res.status( 404 ).json( { message : "User not found"} );
+};
+
 module.exports = {
   register,
-  loginUser
+  loginUser,
+  currentUser
 } 
