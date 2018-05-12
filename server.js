@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const users = require('./routes/api/users');
-const profile = require('./routes/api/profile');
-const posts = require('./routes/api/posts');
+const appModules = require('./config/appConfig').modules;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,8 +15,11 @@ mongoose.connect(db).then(() => console.log('DB CONNECTED!')).catch(err => conso
 
 app.get('/', (req, res) => res.send('Hey!'));
 
-app.use('/api/users', users);
-app.use('/api/profile', profile);
-app.use('/api/posts', posts);
+appModules.forEach( module => {
+  const path = `./modules/${module}/${module}.router`;
+  const router = require( path );
+  
+  app.use( `/api/${module}`, router);
+});
 
 app.listen(PORT, () => console.log(`======= Running on port ${PORT} =========`));

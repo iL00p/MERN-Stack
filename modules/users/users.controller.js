@@ -1,4 +1,3 @@
-const express = require('express');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -7,11 +6,7 @@ const User = require('../../models/User');
 const imageOptions = require('../../config/appConfig').gravatarOptions;
 const secret = require('../../config/keys').secret;
 
-const router = express.Router();
-
-router.get('/test', (req, res) => res.json({message: "USERS WORKS"}));
-
-router.post('/', (req, res) => {
+const register =  (req, res) => {
   const {body} = req;
 
   User.findOne({email: body.email}).then(user => {
@@ -36,9 +31,9 @@ router.post('/', (req, res) => {
     })
 
   })
-});
+}
 
-router.post('/login', (req, res) => {
+const loginUser = (req, res) => {
   const {
     body: {
       email,
@@ -85,6 +80,9 @@ router.post('/login', (req, res) => {
     })
   })
 
-});
+}
 
-module.exports = router;
+module.exports = {
+  register,
+  loginUser
+} 
