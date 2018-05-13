@@ -9,5 +9,17 @@ module.exports = {
     'posts',
     'profile',
     'users'
+  ],
+  profileFields : [
+    'handle',
+    'website',
+    'location',
+    'status',
+    'skills',
+    'bio',
+    'githubusername',
+    'experience',
+    'education',
+    'social'
   ]
 };
