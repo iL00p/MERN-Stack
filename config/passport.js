@@ -9,9 +9,7 @@ const opts = {
 }
 
 module.exports = passport => {
-  passport.use( new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log("PAYLOAD::", jwt_payload);
-    
+  passport.use( new JwtStrategy(opts, (jwt_payload, done) => {    
     User.findById( jwt_payload._id ).then( user => {
       if ( user ) done( null, user );
       else done( null, false );
