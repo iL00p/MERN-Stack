@@ -5,16 +5,23 @@ const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const imageOptions = require('../../config/appConfig').gravatarOptions;
 const secret = require('../../config/keys').secret;
+const Validations = require('./users.validation');
 
 const TOKEN_EXPIRY = 36000;
 
 const register =  (req, res) => {
   const {body} = req;
+  
+  const { errors, isValid } = Validations.validateRegisteration( body );
+  
+  if( !isValid )
+    return res.status(400).json( errors );
 
   User.findOne({email: body.email}).then(user => {
-
-    if (user) 
-      return res.status(400).json({message: "Email already exists"});
+    if (user) {
+      errors.email = "Email already exists";
+      return res.status(400).json( errors );
+    }
     
     const avatar = gravatar.url(body.email, imageOptions);
 
@@ -42,6 +49,12 @@ const loginUser = (req, res) => {
       password
     }
   } = req;
+  
+  const { errors, isValid } = Validations.validateLogin( { email, password } );
+  
+  if(!isValid)
+    return res.status(409).json(errors);
+
 
   User.findOne({email}).then(user => {
     if (!user) 
@@ -72,8 +85,11 @@ const loginUser = (req, res) => {
           return res.json({success: true, data, message: "Login Successfull"});
 
         })
-      } else 
-        return res.status(400).json({message: "Password mismatch"});
+      } else {
+        errors.password = 'Password mismatch';
+        return res.status(400).json(errors);
+      }
+        
 
       }
     ).catch(err => {
