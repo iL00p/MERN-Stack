@@ -96,8 +96,48 @@ updateProfileCallToDb = ( profileFields, res ) => {
     .catch( err => res.status(400).json({ err, message: 'Cannot edit profile'} ) );
 }
 
+getByHandle = (req,res) => {
+  const { params : { handle } } = req;
+  if ( _.isEmpty( handle ) )
+    return res.status( 400 ).json( { message : 'Missing handle' } );
+  
+  Profile.findOne( { handle } ).populate( 'user', [ 'name', 'avatar' ])
+    .then( profile => {
+      if( _.isEmpty( profile ) )
+        return res.status( 404 ).json( { message : 'Profile not found' } );
+        
+      return res.json( { data : profile } );
+    }).catch( err => res.status(400).json({ err, message: 'Error loading profile'} ) );
+}
+
+getById = (req,res) => {
+  const { params : { id } } = req;
+  if ( _.isEmpty( id ) )
+    return res.status( 400 ).json( { message : 'Missing handle' } );
+  
+  Profile.findOne( { user : id } ).populate( 'user', [ 'name', 'avatar' ])
+    .then( profile => {
+      if( _.isEmpty( profile ) )
+        return res.status( 404 ).json( { message : 'Profile not found' } );
+        
+      return res.json( { data : profile } );
+    }).catch( err => res.status( 404 ).json({ err, message: 'Error loading profile'} ) );
+}
+
+getAllProfiles = (req,res) => {
+  Profile.find().populate( 'user', [ 'name', 'avatar', 'email' ]).then( results => {
+    if ( !results )
+      return res.status( 404 ).json( { message : 'No profiles found' } )
+      
+    return res.json( { data : results } );
+  }).catch( err => res.status( 404 ).json( { err ,message : 'No profiles found' } ) );
+}
+
 module.exports = {
   getProfileDetails,
   setProfileDetails,
-  updateProfileDetails
+  updateProfileDetails,
+  getByHandle,
+  getById,
+  getAllProfiles
 };
