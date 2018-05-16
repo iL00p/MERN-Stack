@@ -43,6 +43,76 @@ validateProfileFields = (data) => {
   }
 }
 
+validateExperience = ( data ) => {
+  const errors = {};
+  
+  if (isEmpty(data.title)) 
+    errors.title = 'Title is required';
+  else if (!Validator.isLength(data.title, {
+    min: 2,
+    max: 40
+  }))
+  errors.title = 'Title should have more than 2 characters';
+  
+  if (isEmpty(data.company)) 
+    errors.company = 'Company is required';
+  else if (!Validator.isLength(data.company, {
+    min: 2,
+    max: 40
+  }))
+  errors.company = 'Company should have more than 2 characters';
+  
+  if (isEmpty(data.from)) 
+    errors.from = 'From date is required';
+    
+  if ( ( data.current === 'false' || !data.current ) && isEmpty(data.to))
+    errors.to = 'To date is required';
+
+  return {
+    errors, isValid: isEmpty(errors)
+  }
+}
+
+validateEducation = ( data ) => {
+  const errors = {};
+  
+  if (isEmpty(data.school)) 
+    errors.school = 'School is required';
+  else if (!Validator.isLength(data.school, {
+    min: 2,
+    max: 40
+  }))
+  errors.school = 'School should have more than 2 characters';
+  
+  if (isEmpty(data.degree)) 
+    errors.degree = 'Degree is required';
+  else if (!Validator.isLength(data.degree, {
+    min: 2,
+    max: 40
+  }))
+  errors.degree = 'Degree should have more than 2 characters';
+  
+  if (isEmpty(data.fieldofstudy)) 
+    errors.fieldofstudy = 'Field Of Study is required';
+  else if (!Validator.isLength(data.fieldofstudy, {
+    min: 2,
+    max: 40
+  }))
+  errors.fieldofstudy = 'Field Of Study should have more than 2 characters';
+  
+  if (isEmpty(data.from)) 
+    errors.from = 'From date is required';
+    
+  if ( ( data.current === 'false' || !data.current ) && isEmpty(data.to))
+    errors.to = 'To date is required';
+
+  return {
+    errors, isValid: isEmpty(errors)
+  }
+}
+
 module.exports = {
-  validateProfileFields
+  validateProfileFields,
+  validateExperience,
+  validateEducation
 }

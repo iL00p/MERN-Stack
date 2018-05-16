@@ -133,11 +133,65 @@ getAllProfiles = (req,res) => {
   }).catch( err => res.status( 404 ).json( { err ,message : 'No profiles found' } ) );
 }
 
+addExperience = ( req,res ) => {
+  const { user, body } = req;
+  
+  const { errors,isValid } = validateExperience( body );
+  
+  if( !isValid )
+    return res.status( 400 ).json( errors );
+  
+  Profile.findOne( { user : user._id } )
+    .then( profile => {
+      const newExp = {
+        title : body.title,
+        company : body.company,
+        location : body.location,
+        from : body.from,
+        to : body.to,
+        current : body.current,
+        description : body.description
+      };
+      
+      profile.experience.unshift( newExp );
+      
+      profile.save().then( newProfile => res.json( { data : newProfile } ) );
+    }).catch( err => res.status( 400 ).json( { err, message : 'Error adding experience' } ) );
+}
+
+addEducation = ( req,res ) => {
+  const { user, body } = req;
+  
+  const { errors,isValid } = validateEducation( body );
+  
+  if( !isValid )
+    return res.status( 400 ).json( errors );
+  
+  Profile.findOne( { user : user._id } )
+    .then( profile => {
+      const newEdu = {
+        school : body.school,
+        degree : body.degree,
+        fieldofstudy : body.fieldofstudy,
+        from : body.from,
+        to : body.to,
+        current : body.current,
+        description : body.description
+      };
+      
+      profile.education.unshift( newEdu );
+      
+      profile.save().then( newProfile => res.json( { data : newProfile } ) );
+    }).catch( err => res.status( 400 ).json( { err, message : 'Error adding education' } ) );
+}
+
 module.exports = {
   getProfileDetails,
   setProfileDetails,
   updateProfileDetails,
   getByHandle,
   getById,
-  getAllProfiles
+  getAllProfiles,
+  addExperience,
+  addEducation
 };

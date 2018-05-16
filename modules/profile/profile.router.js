@@ -16,8 +16,13 @@ router.put('/', passport.authenticate( 'jwt', { session : false } ), profileCont
 router.get('/handle/:handle', profileController.getByHandle );
 // get all profiles
 router.get('/all', profileController.getAllProfiles );
+// add experience
+router.post('/experience', passport.authenticate( 'jwt', { session : false } ), profileController.addExperience )
+// add education
+router.post('/education', passport.authenticate( 'jwt', { session : false } ), profileController.addEducation )
 // get by id
 router.get('/:id', profileController.getById );
+
 
 
 
