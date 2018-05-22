@@ -159,6 +159,26 @@ addExperience = ( req,res ) => {
     }).catch( err => res.status( 400 ).json( { err, message : 'Error adding experience' } ) );
 }
 
+deleteExperience = ( req,res ) => {
+  const { user, params : { expId } } = req;
+    
+  if( !expId )
+    return res.status( 400 ).json( { message : 'Id is required' } );
+    
+  Profile.findOne( { user : user._id } )
+    .then( profile => {
+      
+      const expIndex = profile.experience.findIndex( exp => exp._id == expId );
+
+      if ( expIndex  === -1 )
+        return res.status( 404 ).json( { message : 'Experience not found' } );
+        
+      profile.experience.splice( expIndex, 1);
+      
+      profile.save().then( newProfile => res.json( { data : newProfile } ) );
+    }).catch( err => res.status( 400 ).json( { err, message : 'Error deleting experience' } ) );
+}
+
 addEducation = ( req,res ) => {
   const { user, body } = req;
   
@@ -185,6 +205,36 @@ addEducation = ( req,res ) => {
     }).catch( err => res.status( 400 ).json( { err, message : 'Error adding education' } ) );
 }
 
+deleteEducation = ( req,res ) => {
+  const { user, params : { eduId } } = req;
+    
+  if( !eduId )
+    return res.status( 400 ).json( { message : 'Id is required' } );
+    
+  Profile.findOne( { user : user._id } )
+    .then( profile => {
+      
+      const eduIndex = profile.education.findIndex( edu => edu._id == eduId );
+
+      if ( eduIndex  === -1 )
+        return res.status( 404 ).json( { message : 'Education not found' } );
+        
+      profile.education.splice( eduIndex, 1);
+      
+      profile.save().then( newProfile => res.json( { data : newProfile } ) );
+    }).catch( err => res.status( 400 ).json( { err, message : 'Error deleting education' } ) );
+}
+
+deleteProfile = ( req,res ) => {
+  const { user } = req;
+  
+  Profile.findOneAndRemove( { user : user._id } ).then( () => {
+    User.findOneAndRemove( { _id : user._id } ).then( () => {
+      return res.json( { success : 1, message : 'Profile successfully deleted' } )
+    })
+  }).catch( err => res.status( 400 ).json( { err, message : 'Error deleting profile' } ) )
+}
+
 module.exports = {
   getProfileDetails,
   setProfileDetails,
@@ -193,5 +243,8 @@ module.exports = {
   getById,
   getAllProfiles,
   addExperience,
-  addEducation
+  addEducation,
+  deleteExperience,
+  deleteEducation,
+  deleteProfile
 };

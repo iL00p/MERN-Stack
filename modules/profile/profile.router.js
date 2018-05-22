@@ -18,10 +18,16 @@ router.get('/handle/:handle', profileController.getByHandle );
 router.get('/all', profileController.getAllProfiles );
 // add experience
 router.post('/experience', passport.authenticate( 'jwt', { session : false } ), profileController.addExperience )
+// delete experience
+router.delete('/experience/:expId', passport.authenticate( 'jwt', { session : false } ), profileController.deleteExperience )
 // add education
 router.post('/education', passport.authenticate( 'jwt', { session : false } ), profileController.addEducation )
+// delete education
+router.delete('/education/:eduId', passport.authenticate( 'jwt', { session : false } ), profileController.deleteEducation )
 // get by id
 router.get('/:id', profileController.getById );
+// delete user & profile
+router.delete('/', passport.authenticate( 'jwt', { session : false } ), profileController.deleteProfile );
 
 
 
