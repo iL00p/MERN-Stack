@@ -11,6 +11,10 @@ router.post('/', passport.authenticate( 'jwt' , { session : false } ), postsCont
 router.get('/:id', postsController.getPostById );
 // get all posts
 router.get('/', postsController.getAllPosts );
+// like post
+router.post('/like/:id', passport.authenticate( 'jwt', { session : false } ), postsController.likePost );
+// unlike post
+router.delete('/like/:id', passport.authenticate( 'jwt', { session : false } ), postsController.unlikePost );
 // delete post
 router.delete('/:id', passport.authenticate( 'jwt', { session : false } ), postsController.deletePost );
 

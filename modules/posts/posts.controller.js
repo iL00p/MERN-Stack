@@ -44,13 +44,42 @@ const deletePost = ( req, res ) => {
       }
     } )
     .catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
+}
 
+const likePost = ( req, res ) => {
+  const { user,params : { id } } = req;
+  Posts.findById( id )
+    .then( post => {
+      if ( post.likes.filter( like => like.user.toString() === user._id.toString() ).length > 0 )
+        return res.status( 400 ).json( { message : 'You have already liked this post' } );
+        
+      post.likes.unshift( { user : user._id } );
+      
+      post.save().then( post => res.json( { data : post } ) );
+    } )
+    .catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
+}
 
+const unlikePost = ( req, res ) => {
+  const { user,params : { id } } = req;
+  Posts.findById( id )
+    .then( post => {
+      if ( post.likes.filter( like => like.user.toString() === user._id.toString() ).length === 0 )
+        return res.status( 400 ).json( { message : 'You have not yet liked this post' } );
+        
+      const postIndex = post.likes.findIndex( like => like.user.toString() === user._id.toString() );  
+      post.likes.splice( postIndex, 1 );
+      
+      post.save().then( post => res.json( { data : post } ) );
+    } )
+    .catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
 }
 
 module.exports = {
   createPost,
   getPostById,
   getAllPosts,
-  deletePost
+  deletePost,
+  likePost,
+  unlikePost
 }
