@@ -75,11 +75,57 @@ const unlikePost = ( req, res ) => {
     .catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
 }
 
+const commentPost = ( req,res ) => {
+  const { 
+    user,
+    params : { id }, 
+    body
+  } = req;
+  
+  const { errors , isValid } = Validations.validateComment( body );
+  
+  if( !isValid )
+    return res.status( 400 ).json( errors );
+  
+  Posts.findById( id )
+    .then( post => {
+      const newComment = {
+        text : body.text,
+        name : body.name,
+        avatar : body.avatar,
+        user : user._id
+      }
+      
+      post.comments.unshift( newComment );
+      post.save().then( data => res.json( { data } ) ).catch( err => res.status(400).json( { err, message : 'Something went wrong'} ));
+    } )
+    .catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
+}
+
+const deleteComment = ( req, res ) => {
+  const { user, params: { postId, commentId } } = req;
+  
+  Posts.findById( postId ).then( post => {
+    const removeIndex = post.comments.findIndex( comment => comment._id.toString() === commentId );
+
+    if ( removeIndex === -1 )
+      return res.status( 404 ).json( { message : 'Comment not found' } );
+      
+    post.comments.splice( removeIndex, 1 );
+    
+    post.save().then( data => res.json( { data } ) );
+      
+  }).catch( err => res.status(400).json( { err, message : 'No Post found'} ) );
+
+}
+
 module.exports = {
   createPost,
   getPostById,
   getAllPosts,
   deletePost,
   likePost,
-  unlikePost
+  unlikePost,
+  commentPost,
+  deleteComment
 }

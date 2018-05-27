@@ -15,6 +15,10 @@ router.get('/', postsController.getAllPosts );
 router.post('/like/:id', passport.authenticate( 'jwt', { session : false } ), postsController.likePost );
 // unlike post
 router.delete('/like/:id', passport.authenticate( 'jwt', { session : false } ), postsController.unlikePost );
+// comment on post
+router.post('/comment/:id', passport.authenticate( 'jwt', { session : false } ), postsController.commentPost );
+// delete comment
+router.delete('/:postId/comment/:commentId', passport.authenticate( 'jwt', { session : false } ), postsController.deleteComment );
 // delete post
 router.delete('/:id', passport.authenticate( 'jwt', { session : false } ), postsController.deletePost );
 
