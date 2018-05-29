@@ -1,37 +1,30 @@
 const Validator = require('validator');
-const isEmpty = require('lodash').isEmpty;
+const { isEmpty } = require('lodash');
 
 
-const validatePost = ( data ) => {
+const validatePost = (data) => {
   const errors = {};
-  
-  if ( isEmpty( data.text ) ) 
-    errors.text = 'Text is required';
-  else if ( !Validator.isLength( data.text, { min : 10, max : 300 } ) )
-    errors.text = 'Post must be between 10 and 300 characters';
-  
+
+  if (isEmpty(data.text)) { errors.text = 'Text is required'; } else if (!Validator.isLength(data.text, { min: 10, max: 300 })) { errors.text = 'Post must be between 10 and 300 characters'; }
+
   return {
     errors,
-    isValid : isEmpty( errors )
-  }
+    isValid: isEmpty(errors),
+  };
+};
 
-}
-
-validateComment = ( data ) => {
+const validateComment = (data) => {
   const errors = {};
-  
-  if ( isEmpty( data.text ) ) 
-    errors.text = 'Text is required';
-  else if ( !Validator.isLength( data.text, { min : 10, max : 300 } ) )
-    errors.text = 'Post must be between 10 and 300 characters';
-  
+
+  if (isEmpty(data.text)) { errors.text = 'Text is required'; } else if (!Validator.isLength(data.text, { min: 10, max: 300 })) { errors.text = 'Post must be between 10 and 300 characters'; }
+
   return {
     errors,
-    isValid : isEmpty( errors )
-  }
-}
+    isValid: isEmpty(errors),
+  };
+};
 
 module.exports = {
   validatePost,
-  validateComment
+  validateComment,
 };
