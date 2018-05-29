@@ -1,16 +1,16 @@
 module.exports = {
-  gravatarOptions : {
-    s : 200, // size of image
-    r : 'pg', // rating of image
-    d : 'mm', // default image 
-    protocol: 'http'
+  gravatarOptions: {
+    s: 200, // size of image
+    r: 'pg', // rating of image
+    d: 'mm', // default image
+    protocol: 'http',
   },
-  modules : [
+  modules: [
     'posts',
     'profile',
-    'users'
+    'users',
   ],
-  profileFields : [
+  profileFields: [
     'handle',
     'website',
     'location',
@@ -20,6 +20,6 @@ module.exports = {
     'githubusername',
     'experience',
     'education',
-    'social'
-  ]
+    'social',
+  ],
 };
