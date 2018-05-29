@@ -26,7 +26,7 @@
     "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "pretest": "eslint --ignore-path .gitignore .",
+    "pretest": "eslint --ignore-path .eslintignore .",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   }
