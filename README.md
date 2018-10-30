@@ -1,29 +1,30 @@
 # Mern Stack
 React + Node + Mongo
 
-To install server package
+To install server package.
 ```
 yarn install
 ```
-To install client packages
+To install client packages.
 ```
 yarn client-install
 ```
-To run client
+To run client.
 ```
 yarn client
 ```
-To run server
+To run server.
 ```
 yarn server
 ```
-To run server & client
+To run server & client.
 ```
 yarn dev
 ```
-To run lint
+To run lint.
 ```
 yarn pretest
 
 yarn pretest --fix // to fix lint
 ```
+By Arjun Sreedhar
