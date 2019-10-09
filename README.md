@@ -27,3 +27,5 @@ yarn pretest
 
 yarn pretest --fix // to fix lint
 ```
+
+For hacktoberfest 2019
