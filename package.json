@@ -9,7 +9,7 @@
     "concurrently": "^3.5.1",
     "express": "^4.16.3",
     "gravatar": "^1.6.0",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.1.0",
     "passport": "^0.4.0",
